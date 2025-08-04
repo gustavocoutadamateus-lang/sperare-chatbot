@@ -107,7 +107,7 @@ body {
   height: auto;
   opacity: 0.05;
   transform: translate(-50%, -50%);
-  background-image: url('assets/logo.png.png');
+  background-image: url('assets/logo.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -302,3 +302,4 @@ body {
     right: 15px;
   }
 }
+
