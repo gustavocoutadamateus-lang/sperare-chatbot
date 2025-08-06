@@ -1,10 +1,18 @@
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
   if (chat) {
-    chat.classList.toggle('show');
+    // Force immediate style application for cross-origin
+    if (chat.classList.contains('show')) {
+      chat.classList.remove('show');
+      // Force reflow
+      chat.offsetHeight;
+    } else {
+      chat.classList.add('show');
+      // Force reflow
+      chat.offsetHeight;
+    }
   }
 }
-
 // Global variables
 let recognition = null;
 let isRecording = false;
@@ -204,6 +212,7 @@ setTimeout(() => {
         chat.classList.remove('show');
     }
 }, 5000);
+
 
 
 
