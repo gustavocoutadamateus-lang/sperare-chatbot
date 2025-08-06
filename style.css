@@ -14,7 +14,8 @@ body {
   right: 20px;
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background-color: hsl(45, 90%, 60%);
+  color: hsl(215, 15%, 15%); /* Dark text/icon on gold */
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -146,8 +147,8 @@ body {
 }
 
 .message.bot .message-bubble {
-  background-color: hsl(45, 90%, 60%); /* Secondary Gold */
-  color: hsl(215, 15%, 15%); /* Dark text */
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
 }
 
 .message.user .message-bubble {
@@ -303,6 +304,7 @@ body {
     right: 15px;
   }
 }
+
 
 
 
