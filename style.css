@@ -51,8 +51,8 @@ body {
 }
 
 .chat-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background-color: hsl(210, 35%, 25%); /* Primary Navy */
+  color: hsl(0, 0%, 98%); /* White text */
   padding: 20px;
   display: flex;
   align-items: center;
@@ -146,8 +146,8 @@ body {
 }
 
 .message.bot .message-bubble {
-  background: #f1f3f5;
-  color: #212529;
+  background-color: hsl(45, 90%, 60%); /* Secondary Gold */
+  color: hsl(215, 15%, 15%); /* Dark text */
 }
 
 .message.user .message-bubble {
@@ -257,8 +257,9 @@ body {
 }
 
 .send-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+
+  background-color: hsl(45, 90%, 60%); /* Secondary Gold */
+  color: hsl(215, 15%, 15%); /* Dark text on gold */
 }
 
 .mic-btn:disabled,
@@ -302,5 +303,6 @@ body {
     right: 15px;
   }
 }
+
 
 
