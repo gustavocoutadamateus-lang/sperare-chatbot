@@ -45,10 +45,13 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.3s ease;
 }
 
 .chat-container.hidden {
   display: none;
+  opacity: 0;
 }
 
 .chat-header {
@@ -306,7 +309,13 @@ body {
     bottom: 15px;
     right: 15px;
   }
+/* Removes blue outline when clicking the chat bubble */
+.chat-toggle-bubble:focus {
+  outline: none;
+  box-shadow: none;
+ }
 }
+
 
 
 
