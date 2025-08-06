@@ -147,13 +147,13 @@ body {
 }
 
 .message.bot .message-bubble {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  background-color: hsl(215, 15%, 85%); /* Medium-dark grey */
+  color: hsl(215, 15%, 15%);            /* Dark text */
 }
 
 .message.user .message-bubble {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  background-color: hsl(0, 0%, 95%); /* Light grey background */
+  color: hsl(215, 15%, 15%);         /* Dark text */
 }
 
 .message-time {
@@ -260,7 +260,7 @@ body {
 .send-btn {
 
   background-color: hsl(45, 90%, 60%); /* Secondary Gold */
-  color: hsl(215, 15%, 15%); /* Dark text on gold */
+  color: hsl(0, 0%, 95%); /* Dark text on gold */
 }
 
 .mic-btn:disabled,
@@ -304,6 +304,7 @@ body {
     right: 15px;
   }
 }
+
 
 
 
