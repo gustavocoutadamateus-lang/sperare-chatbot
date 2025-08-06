@@ -1,7 +1,7 @@
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
   if (chat) {
-    chat.classList.toggle('hidden');
+    chat.classList.toggle('show');
   }
 }
 
@@ -200,9 +200,10 @@ document.addEventListener('visibilitychange', () => {
 // ✅ Auto-open chatbot after 5 seconds (once per page load)
 setTimeout(() => {
     const chat = document.querySelector('.chat-container');
-    if (chat && chat.classList.contains('hidden')) {
-        chat.classList.remove('hidden');
+    if (chat && chat.classList.contains('show')) {
+        chat.classList.remove('show');
     }
 }, 5000);
+
 
 
