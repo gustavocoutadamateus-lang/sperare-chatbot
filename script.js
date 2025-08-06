@@ -2,12 +2,12 @@ function toggleChat() {
   const chat = document.querySelector('.chat-container');
   if (chat) {
     // Force immediate style application for cross-origin
-    if (chat.classList.contains('show')) {
-      chat.classList.remove('show');
+    if (chat.classList.contains('hidden')) {
+      chat.classList.remove('hidden');
       // Force reflow
       chat.offsetHeight;
     } else {
-      chat.classList.add('show');
+      chat.classList.add('hidden');
       // Force reflow
       chat.offsetHeight;
     }
@@ -208,10 +208,11 @@ document.addEventListener('visibilitychange', () => {
 // ✅ Auto-open chatbot after 5 seconds (once per page load)
 setTimeout(() => {
     const chat = document.querySelector('.chat-container');
-    if (chat && chat.classList.contains('show')) {
-        chat.classList.remove('show');
+    if (chat && chat.classList.contains('hidden')) {
+        chat.classList.remove('hidden');
     }
 }, 5000);
+
 
 
 
