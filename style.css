@@ -49,22 +49,19 @@ body {
   overflow: hidden;
   opacity: 1;
   transition: opacity 0.3s ease;
-/* ✅ Smooth transition */
+  /* ✅ Smooth fade and slide in */
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.chat-container.hiding {
-  opacity: 0;
-  transform: translateY(20px);
-  pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
 .chat-container.hidden {
-  display: none;
+  opacity: 0;
+  transform: translateY(20px);
   visibility: hidden;
+  pointer-events: none;
 }
 .chat-header {
   background-color: hsl(210, 35%, 25%); /* Primary Navy */
@@ -327,6 +324,7 @@ body {
   box-shadow: none;
  }
 }
+
 
 
 
