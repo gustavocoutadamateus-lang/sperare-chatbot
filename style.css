@@ -49,21 +49,18 @@ body {
   overflow: hidden;
   opacity: 1;
   transition: opacity 0.3s ease;
-  /* ✅ Smooth fade and slide in */
+ /* Initial visible state */
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* When hidden */
+.chat-container.hidden {
   opacity: 0;
   transform: translateY(20px);
   pointer-events: none;
   visibility: hidden;
-
-  /* Smooth effect */
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.chat-container.active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  visibility: visible;
 }
 .chat-header {
   background-color: hsl(210, 35%, 25%); /* Primary Navy */
@@ -326,6 +323,7 @@ body {
   box-shadow: none;
  }
 }
+
 
 
 
