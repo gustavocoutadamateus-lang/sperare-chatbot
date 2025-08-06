@@ -1,16 +1,7 @@
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
   if (chat) {
-    // Force immediate style application for cross-origin
-    if (chat.classList.contains('hidden')) {
-      chat.classList.remove('hidden');
-      // Force reflow
-      chat.offsetHeight;
-    } else {
-      chat.classList.add('hidden');
-      // Force reflow
-      chat.offsetHeight;
-    }
+    chat.classList.toggle('hidden');  // ✅ Keep using 'hidden'
   }
 }
 // Global variables
@@ -212,6 +203,7 @@ setTimeout(() => {
         chat.classList.remove('hidden');
     }
 }, 5000);
+
 
 
 
