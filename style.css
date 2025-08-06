@@ -55,10 +55,15 @@ body {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.chat-container.hidden {
+.chat-container.hiding {
   opacity: 0;
   transform: translateY(20px);
   pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.chat-container.hidden {
+  display: none;
   visibility: hidden;
 }
 .chat-header {
@@ -322,6 +327,7 @@ body {
   box-shadow: none;
  }
 }
+
 
 
 
