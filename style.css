@@ -59,6 +59,7 @@ body {
   opacity: 0;
   transform: translateY(20px);
   pointer-events: none;
+  visibility: hidden;
 }
 .chat-header {
   background-color: hsl(210, 35%, 25%); /* Primary Navy */
@@ -321,6 +322,7 @@ body {
   box-shadow: none;
  }
 }
+
 
 
 
