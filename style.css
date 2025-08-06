@@ -265,12 +265,14 @@ body {
 
 .mic-btn:disabled,
 .send-btn:disabled {
-  background: #6c757d;
+  background-color: hsl(0, 0%, 95%); /* Light grey (same as user bubble) */
+  color: hsl(215, 15%, 15%);         /* Dark text/icon for contrast */
   cursor: not-allowed;
 }
 
 .mic-btn.recording {
-  background: #dc3545;
+    background-color: hsl(45, 90%, 60%); /* Secondary Gold */
+    color: hsl(215, 15%, 15%);           /* Dark icon/text */
   animation: pulse 1s infinite;
 }
 
@@ -304,6 +306,7 @@ body {
     right: 15px;
   }
 }
+
 
 
 
