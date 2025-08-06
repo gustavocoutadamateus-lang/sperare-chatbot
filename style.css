@@ -253,7 +253,8 @@ body {
 }
 
 .mic-btn {
-  background: #6c757d;
+    background-color: hsl(215, 15%, 85%); /* Match bot bubble */
+  color: hsl(215, 15%, 15%);
   color: white;
 }
 
@@ -265,8 +266,8 @@ body {
 
 .mic-btn:disabled,
 .send-btn:disabled {
-  background-color: hsl(0, 0%, 95%); /* Light grey (same as user bubble) */
-  color: hsl(215, 15%, 15%);         /* Dark text/icon for contrast */
+   background-color: hsl(215, 15%, 85%); /* Match bot bubble */
+  color: hsl(215, 15%, 15%);
   cursor: not-allowed;
 }
 
@@ -306,6 +307,7 @@ body {
     right: 15px;
   }
 }
+
 
 
 
