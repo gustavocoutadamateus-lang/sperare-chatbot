@@ -1,7 +1,7 @@
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
   if (chat) {
-    chat.classList.toggle('active');
+    chat.classList.toggle('hidden');
   }
 }
 
@@ -204,4 +204,5 @@ setTimeout(() => {
         chat.classList.remove('hidden');
     }
 }, 5000);
+
 
