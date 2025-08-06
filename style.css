@@ -55,11 +55,11 @@ body {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* ✅ FIXED: Show state (remove visibility hidden for smooth animation) */
-.chat-container.show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+.chat-container.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  /* visibility: hidden;  ← REMOVE THIS */
 }
 .chat-header {
   background-color: hsl(210, 35%, 25%); /* Primary Navy */
@@ -322,6 +322,7 @@ body {
   box-shadow: none;
  }
 }
+
 
 
 
