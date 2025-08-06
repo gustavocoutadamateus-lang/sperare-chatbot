@@ -54,10 +54,11 @@ body {
   transform: translateY(20px);
   pointer-events: none;
   visibility: hidden;
+
+  /* Smooth effect */
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* When active (chat opened) */
 .chat-container.active {
   opacity: 1;
   transform: translateY(0);
@@ -325,6 +326,7 @@ body {
   box-shadow: none;
  }
 }
+
 
 
 
