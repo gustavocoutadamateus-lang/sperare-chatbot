@@ -30,42 +30,21 @@
   </style>
 </head>
 <body>
-  <!-- Toggle button with chat emoji -->
   <button class="chat-toggle-bubble" onclick="toggleChatbot()" aria-label="Toggle chat">
     💬
   </button>
 
+  <!-- ✅ SIMPLE TEST IFRAME - Always visible -->
+  <iframe 
+    src="https://sperare-chatbot.vercel.app/" 
+    style="position: fixed; bottom: 90px; right: 20px; width: 320px; height: 520px; border: none; border-radius: 20px; z-index: 999998; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);"
+    title="Sperare Chatbot">
+  </iframe>
+
   <script>
-    (function () {
-      const iframe = document.createElement('iframe');
-      iframe.src = "https://sperare-chatbot.vercel.app/"; // ✅ This contains ALL your emojis
-      iframe.style.cssText = `
-        position: fixed; bottom: 90px; right: 20px; width: 320px; height: 520px;
-        border: none; border-radius: 20px; z-index: 999998;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        opacity: 0; transform: translateY(20px); pointer-events: none;
-        visibility: hidden; transition: all 0.3s ease;
-      `;
-      iframe.setAttribute("title", "Sperare Chatbot");
-      document.body.appendChild(iframe);
-      
-      window.toggleChatbot = function() {
-        const isHidden = iframe.style.opacity === "0";
-        if (isHidden) {
-          iframe.style.visibility = "visible";
-          iframe.style.opacity = "1";
-          iframe.style.transform = "translateY(0)";
-          iframe.style.pointerEvents = "auto";
-        } else {
-          iframe.style.opacity = "0";
-          iframe.style.transform = "translateY(20px)";
-          iframe.style.pointerEvents = "none";
-          setTimeout(() => iframe.style.visibility = "hidden", 300);
-        }
-      };
-      
-      setTimeout(() => toggleChatbot(), 5000);
-    })();
+    function toggleChatbot() {
+      console.log('Button clicked!');
+    }
   </script>
 </body>
 </html>
