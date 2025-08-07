@@ -4,79 +4,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Emily - SPERARE AI Real Estate Assistant</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    .chat-toggle-bubble {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background-color: hsl(45, 90%, 60%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      z-index: 999999;
+      transition: transform 0.2s;
+    }
+    .chat-toggle-bubble:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
-  <!-- Chat bubble trigger -->
-  <button class="chat-toggle-bubble" onclick="toggleChat()" aria-label="Open chat">
-  💬
-</button>
+  <!-- Toggle button with chat emoji -->
+  <button class="chat-toggle-bubble" onclick="toggleChatbot()" aria-label="Toggle chat">
+    💬
+  </button>
 
-  <!-- Chat widget container -->
-  <div class="chat-container hidden" id="chatContainer">
-    <div class="chat-header">
-      <div class="chat-avatar">
-        <img src="assets/avatar.png.png" alt="Sperare Assistant Avatar" />
-      </div>
-
-      <div class="chat-header-content">
-        <h1>Emily</h1>
-        <p>SPERARE AI Real Estate Assistant</p>
-      </div>
-
-      <button class="chat-close-btn" onclick="toggleChat()">×</button>
-    </div>
-
-    <!-- Background Logo -->
-    <div class="chat-background-logo"></div>
-
-    <div class="chat-messages" id="chatMessages">
-      <div class="message bot">
-        <div class="message-bubble">
-          Hi! I'm Emily, SPERARE's AI real estate assistant. How can I help you today?
-          <div class="message-time" id="welcomeTime"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="typing-indicator" id="typingIndicator">
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
-    </div>
-
-    <div class="quick-replies" id="quickReplies">
-      <button class="quick-reply-btn" onclick="sendQuickReply('Emily\'s Instructions')">📘 Emily's Instructions</button>
-    </div>
-
-    <div class="chat-input-container">
-      <div class="input-wrapper">
-        <input 
-          type="text" 
-          class="chat-input" 
-          id="messageInput" 
-          placeholder="Type your message..."
-          aria-label="Message input"
-          maxlength="500"
-        >
-        <button 
-          class="input-btn mic-btn tooltip" 
-          id="micBtn" 
-          onclick="toggleSpeechRecognition()"
-          aria-label="Voice input"
-          data-tooltip="Voice input"
-        >🎤</button>
-        <button 
-          class="input-btn send-btn" 
-          id="sendBtn" 
-          onclick="sendMessage(document.getElementById('messageInput').value.trim(), 'text')"
-          aria-label="Send message"
-        >➤</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+  <script>
+    (function () {
+      const iframe = document.createElement('iframe');
+      iframe.src = "https://sperare-chatbot.vercel.app/"; // ✅ This contains ALL your emojis
+      iframe.style.cssText = `
+        position: fixed; bottom: 90px; right: 20px; width: 320px; height: 520px;
+        border: none; border-radius: 20px; z-index: 999998;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        opacity: 0; transform: translateY(20px); pointer-events: none;
+        visibility: hidden; transition: all 0.3s ease;
+      `;
+      iframe.setAttribute("title", "Sperare Chatbot");
+      document.body.appendChild(iframe);
+      
+      window.toggleChatbot = function() {
+        const isHidden = iframe.style.opacity === "0";
+        if (isHidden) {
+          iframe.style.visibility = "visible";
+          iframe.style.opacity = "1";
+          iframe.style.transform = "translateY(0)";
+          iframe.style.pointerEvents = "auto";
+        } else {
+          iframe.style.opacity = "0";
+          iframe.style.transform = "translateY(20px)";
+          iframe.style.pointerEvents = "none";
+          setTimeout(() => iframe.style.visibility = "hidden", 300);
+        }
+      };
+      
+      setTimeout(() => toggleChatbot(), 5000);
+    })();
+  </script>
 </body>
-
 </html>
