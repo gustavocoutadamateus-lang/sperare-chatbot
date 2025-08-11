@@ -11,9 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
-  if (chat) {
-    chat.classList.toggle('hidden');  // ✅ Keep using 'hidden'
+  if (window.self !== window.top) {
+    // We're inside an iframe → tell parent to close
+    window.parent.postMessage({ type: 'closeChatbot' }, '*');
+  } else {
+    // Normal standalone mode
+    if (chat) {
+      chat.classList.toggle('hidden');
+    }
   }
+}
+
 }
 // Global variables
 let recognition = null;
@@ -216,6 +224,7 @@ if (!EMBED) {
     }
   }, 5000);
 }
+
 
 
 
