@@ -11,12 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
-   (chat) {
-      chat.classList.toggle('hidden');
-    }
+  if (EMBED) {
+    window.parent.postMessage({ type: 'closeChatbot' }, '*');
+  } else {
+    if (chat) chat.classList.toggle('hidden');
   }
-
 }
+
 // Global variables
 let recognition = null;
 let isRecording = false;
@@ -218,6 +219,7 @@ if (!EMBED) {
     }
   }, 5000);
 }
+
 
 
 
