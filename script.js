@@ -1,3 +1,8 @@
+// --- EMBED MODE DETECTION ---
+const qs = new URLSearchParams(location.search);
+const EMBED = qs.get('embed') === '1' || (window.self !== window.top);
+document.body?.setAttribute('data-embed', EMBED ? '1' : '0');
+
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
   if (chat) {
@@ -203,6 +208,7 @@ setTimeout(() => {
         chat.classList.remove('hidden');
     }
 }, 5000);
+
 
 
 
