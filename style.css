@@ -327,7 +327,20 @@ body[data-embed="1"] .chat-toggle-bubble { display: none !important; }
 /* When embedded, the chat panel should be visible by default */
 body[data-embed="1"] #chatContainer.hidden { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
+/* Embed mode: hide the launcher bubble and keep panel visible */
+body[data-embed="1"] .chat-toggle-bubble { 
+  display: none !important; 
 }
+
+body[data-embed="1"] #chatContainer,
+body[data-embed="1"] #chatContainer.hidden {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+}
+
+}
+
 
 
 
