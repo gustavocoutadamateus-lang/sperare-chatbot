@@ -321,7 +321,14 @@ body {
   outline: none;
   box-shadow: none;
  }
+/* When embedded (Lovable iframe), hide our own launcher bubble */
+body[data-embed="1"] .chat-toggle-bubble { display: none !important; }
+
+/* When embedded, the chat panel should be visible by default */
+body[data-embed="1"] #chatContainer.hidden { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
 }
+
 
 
 
