@@ -1,7 +1,13 @@
 // --- EMBED MODE DETECTION ---
 const qs = new URLSearchParams(location.search);
 const EMBED = qs.get('embed') === '1' || (window.self !== window.top);
-document.body?.setAttribute('data-embed', EMBED ? '1' : '0');
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.setAttribute('data-embed', EMBED ? '1' : '0');
+  if (EMBED) {
+    const chat = document.getElementById('chatContainer');
+    chat && chat.classList.remove('hidden'); // show panel by default in embed
+  }
+});
 
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
@@ -201,13 +207,16 @@ document.addEventListener('visibilitychange', () => {
     if (document.hidden && isRecording) recognition.stop();
 });
 
-// ✅ Auto-open chatbot after 5 seconds (once per page load)
-setTimeout(() => {
+// Auto-open after 5s only when NOT embedded
+if (!EMBED) {
+  setTimeout(() => {
     const chat = document.querySelector('.chat-container');
     if (chat && chat.classList.contains('hidden')) {
-        chat.classList.remove('hidden');
+      chat.classList.remove('hidden');
     }
-}, 5000);
+  }, 5000);
+}
+
 
 
 
