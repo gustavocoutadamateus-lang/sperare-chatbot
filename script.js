@@ -162,12 +162,14 @@ function addMessage(sender, text, isError = false) {
     messageDiv.className = `message ${sender}`;
 
     const bubbleClass = isError ? 'error-message' : 'message-bubble';
-    messageDiv.innerHTML = `
-        <div class="${bubbleClass}">
-            ${text}
-            <div class="message-time">${formatTime(new Date())}</div>
-        </div>
-    `;
+   messageDiv.innerHTML = `
+  <div class="${bubbleClass}">
+    ${text
+      .replace(/\n/g, "<br>")
+      .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")}
+    <div class="message-time">${formatTime(new Date())}</div>
+  </div>
+`;
 
     messagesContainer.appendChild(messageDiv);
     scrollToBottom();
@@ -219,6 +221,7 @@ if (!EMBED) {
     }
   }, 5000);
 }
+
 
 
 
