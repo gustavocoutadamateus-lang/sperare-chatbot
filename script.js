@@ -28,7 +28,7 @@ let micBtn = document.getElementById('micBtn');
 let typingIndicator = document.getElementById('typingIndicator');
 
 // ✅ Your n8n webhook URL
-const WEBHOOK_URL = 'http://localhost:5678/webhook/9109b275-6754-4f7b-8d6a-8382d4685b9f/chat';
+const WEBHOOK_URL = 'https://n8nguimaraes.pt/webhook/9109b275-6754-4f7b-8d6a-8382d4685b9f/chat';
 
 // Initialize the chatbot
 function initializeChatbot() {
@@ -221,6 +221,7 @@ if (!EMBED) {
     }
   }, 5000);
 }
+
 
 
 
