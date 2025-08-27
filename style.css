@@ -339,7 +339,27 @@ body[data-embed="1"] #chatContainer.hidden {
   pointer-events: auto !important;
 }
 
+body[data-embed="1"] .chat-container {
+  width: 100vw !important;
+  height: 100vh !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  border-radius: 0 !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
 }
+
+body[data-embed="1"] .chat-toggle-bubble {
+  display: none !important;
+}
+
+body[data-embed="1"] .chat-close-btn {
+  display: block !important;
+}
+
+}
+
 
 
 
