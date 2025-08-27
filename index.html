@@ -15,6 +15,12 @@
 </head>
 
 <body data-embed="0">
+<script>
+    // Ativa o modo embed (fullscreen) só em telemóveis
+    if (window.innerWidth <= 600) {
+      document.body.setAttribute("data-embed", "1");
+    }
+  </script>
 
   <!-- Chat bubble trigger -->
   <button class="chat-toggle-bubble" onclick="toggleChat()" aria-label="Open chat">
@@ -88,6 +94,7 @@
   <script src="script.js"></script>
 
 </html>
+
 
 
 
