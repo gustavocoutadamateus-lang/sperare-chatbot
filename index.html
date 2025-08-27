@@ -15,23 +15,20 @@
 </head>
 
 <body data-embed="0">
-  <script>
-    // Ativa o modo embed fullscreen em duas situações:
-    // 1. Se a largura for mobile (≤600px)
-    // 2. Ou se a URL tiver ?embed=1 (usado pelo Lovable)
-    document.addEventListener("DOMContentLoaded", function () {
-      const isMobile = window.innerWidth <= 600;
-      const urlParams = new URLSearchParams(window.location.search);
-      const isEmbed = urlParams.get('embed') === '1';
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Detecta se a largura real da janela do dispositivo é de telemóvel
+    const isMobile = window.matchMedia("(max-width: 600px)").matches;
 
-      if (isMobile || isEmbed) {
-        document.body.setAttribute("data-embed", "1");
-        console.log("✅ data-embed=1 aplicado (motivo:", isMobile ? "mobile" : "embed param", ")");
-      } else {
-        console.log("🧊 data-embed=0 (modo desktop normal)");
-      }
-    });
-  </script>
+    if (isMobile) {
+      document.body.setAttribute("data-embed", "1");
+      console.log("✅ data-embed=1 aplicado (motivo: mobile real)");
+    } else {
+      console.log("🧊 data-embed=0 (modo desktop)");
+    }
+  });
+</script>
+
 
 
   <!-- Chat bubble trigger -->
@@ -112,6 +109,7 @@
 </body>
 </html>
 </html>
+
 
 
 
