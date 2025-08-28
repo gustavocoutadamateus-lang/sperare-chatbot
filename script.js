@@ -1,19 +1,18 @@
-// --- EMBED MODE DETECTION (mantém o comportamento que já tinhas) ---
+// --- EMBED MODE DETECTION ---
 const qs = new URLSearchParams(location.search);
 const EMBED = qs.get('embed') === '1' || (window.self !== window.top);
 document.addEventListener('DOMContentLoaded', () => {
   document.body.setAttribute('data-embed', EMBED ? '1' : '0');
   if (EMBED) {
     const chat = document.getElementById('chatContainer');
-    chat && chat.classList.remove('hidden'); // show panel by default in embed
+    chat && chat.classList.remove('hidden'); // painel visível em embed
   }
 });
 
 /* ====================== CONTEXTO + SESSÃO ======================= */
-// Domínio do Lovable que está a embeber o chat
 const PARENT_ORIGIN = "https://sperare-dream-homes.lovable.app";
 
-// urlId pode vir no src (?urlId=123) ou já ter ficado no storage
+// urlId pode vir no src (?urlId=123) ou já estar guardado
 let currentUrlId =
   new URLSearchParams(location.search).get("urlId") ||
   localStorage.getItem("urlId") ||
@@ -29,7 +28,7 @@ window.addEventListener("message", (event) => {
   if (type === "PROPERTY_CONTEXT") {
     currentUrlId = urlId || null;
     if (currentUrlId) localStorage.setItem("urlId", currentUrlId);
-    notifyPageWebhook(); // ⬅️ só manda o URL para o webhook de página
+    notifyPageWebhook(); // envia só o urlId para o webhook de página
   }
 });
 
@@ -50,12 +49,12 @@ function getOrCreateUserSessionId() {
 let USER_SESSION_ID = getOrCreateUserSessionId();
 
 /* ====================== WEBHOOKS n8n ======================= */
-// CHAT: já tinhas um; confirma/ajusta aqui se necessário
+// CHAT: mantém o teu endpoint que já responde ao chat (leva sessionId)
 const CHAT_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook/9109b275-6754-4f7b-8d6a-8382d4685b9f/chat';
 
-// PÁGINA: novo webhook só para dizer “estou na listagem X” (apenas urlId)
+// PÁGINA: novo endpoint "só URL" (dispara quando muda de listagem)
 const PAGE_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook-test/5b7c178b-e215-45a6-b016-318a48be8b57';
-// quando fores para produção, troca para: /webhook/5b7c178b-e215-45a6-b016-318a48be8b57
+// em produção troca para /webhook/… (sem -test)
 
 // dispara 1x por listagem; evita spam se o id não mudou
 let lastNotifiedUrlId = null;
@@ -63,7 +62,7 @@ function notifyPageWebhook() {
   if (!currentUrlId || currentUrlId === lastNotifiedUrlId) return;
   lastNotifiedUrlId = currentUrlId;
 
-  const payload = { urlId: String(currentUrlId) }; // ✅ só o urlId como pediste
+  const payload = { urlId: String(currentUrlId) }; // só o urlId como pediste
   try {
     const body = JSON.stringify(payload);
     if (navigator.sendBeacon) {
@@ -79,7 +78,7 @@ function notifyPageWebhook() {
   } catch {}
 }
 
-/* ====================== UI BÁSICA DO CHAT ======================= */
+/* ====================== UI / CHAT ======================= */
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
   if (EMBED) {
@@ -97,11 +96,22 @@ function formatTime(date) {
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+// 🔥 AQUI está o fix: recriamos a mesma hierarquia que o CSS espera
 function addMessage(sender, text) {
+  const msg = document.createElement('div');
+  msg.className = `message ${sender}`;
+
   const bubble = document.createElement('div');
-  bubble.className = `message ${sender}`;
+  bubble.className = 'message-bubble';
   bubble.textContent = text;
-  messagesContainer.appendChild(bubble);
+
+  const timeEl = document.createElement('div');
+  timeEl.className = 'message-time';
+  timeEl.textContent = formatTime(new Date());
+
+  bubble.appendChild(timeEl);
+  msg.appendChild(bubble);
+  messagesContainer.appendChild(msg);
   scrollToBottom();
 }
 
@@ -114,9 +124,9 @@ let sendBtn = document.getElementById('sendBtn');
 let micBtn = document.getElementById('micBtn');
 let typingIndicator = document.getElementById('typingIndicator');
 
-// init
 function initializeChatbot() {
-  document.getElementById('welcomeTime')?.textContent = formatTime(new Date());
+  const welcomeTime = document.getElementById('welcomeTime');
+  if (welcomeTime) welcomeTime.textContent = formatTime(new Date());
   initializeSpeechRecognition();
 
   messageInput.addEventListener('keypress', function(e) {
@@ -175,11 +185,11 @@ function initializeSpeechRecognition() {
   }
 }
 
-micBtn.addEventListener('click', () => {
+function toggleSpeechRecognition() {
   if (!recognition) return;
   if (isRecording) recognition.stop();
   else recognition.start();
-});
+}
 
 /* ====================== UI STATES ======================= */
 function setInputState(enabled) {
@@ -197,7 +207,7 @@ function hideTypingIndicator() {
 }
 
 /* ====================== ENVIO PARA WEBHOOK (CHAT) ======================= */
-// ⚠️ Este continua a ir para o webhook de CHAT (mensagens) e inclui sessionId
+// continua a ir para o webhook de CHAT (mensagens) e inclui sessionId + urlId
 async function sendMessage(message, actionType = 'text') {
   if (!message) return;
 
@@ -213,8 +223,8 @@ async function sendMessage(message, actionType = 'text') {
       body: JSON.stringify({
         chatInput: message,
         action: actionType,
-        sessionId: USER_SESSION_ID,     // já tinhas: id estável por user
-        urlId: currentUrlId || null     // continua a mandar o urlId também
+        sessionId: USER_SESSION_ID,     // valor gerado (15 dígitos)
+        urlId: currentUrlId || null     // listagem atual (se existir)
       })
     });
 
