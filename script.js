@@ -18,11 +18,21 @@ let currentUrlId =
   localStorage.getItem("urlId") ||
   null;
 
-// avisa o parent que o chat está pronto (ele reenvia PROPERTY_CONTEXT)
-try { window.parent.postMessage({ type: "CHAT_READY" }, PARENT_ORIGIN); } catch {}
+// ✅ NOVO: só envia CHAT_READY se estivermos MESMO em iframe
+function safePostToParent(msg) {
+  if (EMBED && window.parent && window.parent !== window) {
+    try { window.parent.postMessage(msg, PARENT_ORIGIN); } catch {}
+  }
+}
+
+// 🔄 TROCA: em vez do try solto, usa o helper acima
+document.addEventListener('DOMContentLoaded', () => {
+  safePostToParent({ type: "CHAT_READY" }); // o parent responde com PROPERTY_CONTEXT
+});
 
 // recebe PROPERTY_CONTEXT do parent → guarda urlId e dispara o webhook de página
 window.addEventListener("message", (event) => {
+  // debug opcional: console.log("[iframe] msg", event.origin, event.data);
   if (event.origin !== PARENT_ORIGIN) return;
   const { type, urlId } = event.data || {};
   if (type === "PROPERTY_CONTEXT") {
@@ -54,20 +64,26 @@ const CHAT_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook/910
 
 // PÁGINA: novo endpoint (dispara quando muda de listagem)
 const PAGE_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook/5b7c178b-e215-45a6-b016-318a48be8b57';
-// em produção troca para /webhook/… (sem -test)
 
 // dispara 1x por listagem; evita spam se o id não mudou
 let lastNotifiedUrlId = null;
 function notifyPageWebhook() {
-  if (!currentUrlId || currentUrlId === lastNotifiedUrlId) return;
+  // ✅ logs curtos para debug
+  console.log('[notifyPageWebhook] urlId=', currentUrlId, 'last=', lastNotifiedUrlId);
+
+  if (!currentUrlId || currentUrlId === lastNotifiedUrlId) {
+    console.log('[notifyPageWebhook] skipped');
+    return;
+  }
   lastNotifiedUrlId = currentUrlId;
 
-  // 🔥 payload agora inclui sessionId e fullUrl
+  // payload inclui sessionId e fullUrl (para tracking/analytics no n8n)
   const payload = {
     urlId: String(currentUrlId),
     fullUrl: location.href,
     sessionId: USER_SESSION_ID
   };
+  console.log('[notifyPageWebhook] sending to', PAGE_WEBHOOK_URL, payload);
 
   try {
     const body = JSON.stringify(payload);
@@ -90,7 +106,8 @@ function notifyPageWebhook() {
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
   if (EMBED) {
-    window.parent.postMessage({ type: 'closeChatbot' }, '*');
+    // fechar no parent (widget)
+    safePostToParent({ type: 'closeChatbot' }); // ✅ usa helper (mantém origin correto)
   } else {
     chat.classList.toggle('hidden');
   }
@@ -257,9 +274,6 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
-
-
-
 
 
 
