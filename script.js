@@ -85,21 +85,16 @@ function notifyPageWebhook() {
   };
   console.log('[notifyPageWebhook] sending to', PAGE_WEBHOOK_URL, payload);
 
-  try {
-    const body = JSON.stringify(payload);
-    if (navigator.sendBeacon) {
-      navigator.sendBeacon(PAGE_WEBHOOK_URL, new Blob([body], { type: 'application/json' }));
-    } else {
-      fetch(PAGE_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body,
-        keepalive: true
-      }).catch(()=>{});
-    }
-  } catch (err) {
-    console.error('Page webhook error:', err);
-  }
+  // ✅ ALTERADO: usar fetch fire-and-forget sem credenciais (evita CORS com sendBeacon)
+  const body = JSON.stringify(payload);
+  fetch(PAGE_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+    keepalive: true,
+    credentials: 'omit',
+    mode: 'no-cors'
+  }).catch(()=>{});
 }
 
 /* ====================== UI / CHAT ======================= */
@@ -274,8 +269,6 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
-
-
 
 
 
