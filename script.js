@@ -49,10 +49,11 @@ function getOrCreateUserSessionId() {
 let USER_SESSION_ID = getOrCreateUserSessionId();
 
 /* ====================== WEBHOOKS n8n ======================= */
+/* ====================== WEBHOOKS n8n ======================= */
 // CHAT: mantém o teu endpoint que já responde ao chat (leva sessionId)
 const CHAT_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook/9109b275-6754-4f7b-8d6a-8382d4685b9f/chat';
 
-// PÁGINA: novo endpoint "só URL" (dispara quando muda de listagem)
+// PÁGINA: novo endpoint (dispara quando muda de listagem)
 const PAGE_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook-test/5b7c178b-e215-45a6-b016-318a48be8b57';
 // em produção troca para /webhook/… (sem -test)
 
@@ -62,7 +63,13 @@ function notifyPageWebhook() {
   if (!currentUrlId || currentUrlId === lastNotifiedUrlId) return;
   lastNotifiedUrlId = currentUrlId;
 
-  const payload = { urlId: String(currentUrlId) }; // só o urlId como pediste
+  // 🔥 payload agora inclui sessionId e fullUrl
+  const payload = {
+    urlId: String(currentUrlId),
+    fullUrl: location.href,
+    sessionId: USER_SESSION_ID
+  };
+
   try {
     const body = JSON.stringify(payload);
     if (navigator.sendBeacon) {
@@ -75,7 +82,9 @@ function notifyPageWebhook() {
         keepalive: true
       }).catch(()=>{});
     }
-  } catch {}
+  } catch (err) {
+    console.error('Page webhook error:', err);
+  }
 }
 
 /* ====================== UI / CHAT ======================= */
@@ -249,6 +258,7 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
