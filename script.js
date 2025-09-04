@@ -265,10 +265,37 @@ async function sendMessage(message, actionType = 'text') {
     hideTypingIndicator();
     setInputState(true);
   }
+// minimal markdown→HTML (bold + italic + line breaks)
+function mdToHtml(text){
+  // escape first to avoid stray HTML sneaking in
+  const esc = text
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+
+  // **bold**  and  *italic*
+  const withMarkup = esc
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*(?!\s)(.+?)\*(?!\w)/g, '$1<em>$2</em>');
+
+  // keep author line breaks (CSS pre-wrap handles this too; <br> helps older code)
+  return withMarkup.replace(/\n/g, '<br>');
+}
+
+function renderAssistantMessage(raw){
+  const html = mdToHtml(raw);
+  const safe = DOMPurify.sanitize(html); // sanitize before inserting
+  const el = document.createElement('div');
+  el.className = 'message bot';
+  el.innerHTML = `<div class="message-bubble">${safe}</div>`;
+  document.querySelector('.chat-messages').appendChild(el);
+}
+
 }
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
