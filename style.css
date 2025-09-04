@@ -22,7 +22,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   font-size: 28px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   cursor: pointer;
@@ -32,6 +31,12 @@ body {
 
 .chat-toggle-bubble:hover {
   transform: scale(1.05);
+}
+
+/* Removes blue outline when clicking the chat bubble */
+.chat-toggle-bubble:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .chat-container {
@@ -48,9 +53,6 @@ body {
   flex-direction: column;
   overflow: hidden;
   opacity: 1;
-  transition: opacity 0.3s ease;
- /* Initial visible state */
-  opacity: 1;
   transform: translateY(0);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
@@ -59,8 +61,8 @@ body {
   opacity: 0;
   transform: translateY(20px);
   pointer-events: none;
-  /* visibility: hidden;  ← REMOVE THIS */
 }
+
 .chat-header {
   background-color: hsl(210, 35%, 25%); /* Primary Navy */
   color: hsl(0, 0%, 98%); /* White text */
@@ -146,47 +148,71 @@ body {
   flex-direction: row-reverse;
 }
 
+/* 🔥 FIXED: Proper message bubble styling with optimal sizing */
 .message-bubble {
-  display: inline-block;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-  word-break: normal;
-  hyphens: none;
+  display: inline-block;         /* ✅ Prevents full-width "bricks" */
+  white-space: pre-wrap;         /* ✅ Keep \n line breaks from the model */
+  overflow-wrap: break-word;     /* ✅ Modern wrapping */
+  word-break: normal;            /* ✅ Avoid aggressive breaks */
+  hyphens: none;                 /* ✅ Stop "avail-able" splits */
   -webkit-hyphens: none;
   -moz-hyphens: none;
 
-  max-width: 66ch;
-  line-height: 1.55;
-  font-size: 14.5px;
-  padding: 10px 12px;
-  border-radius: 14px;
+  max-width: 240px;              /* ✅ Optimal width for chat bubbles */
+  line-height: 1.55;             /* ✅ Easier scanning */
+  font-size: 14.5px;             /* ✅ Slightly larger for legibility */
+  padding: 12px 14px;            /* ✅ Comfortable padding */
+  border-radius: 18px;           /* ✅ Modern bubble shape */
+  margin: 2px 0;                 /* ✅ Small vertical spacing */
 }
-
 
 .message.bot .message-bubble {
   background-color: hsl(215, 15%, 85%); /* Medium-dark grey */
   color: hsl(215, 15%, 15%);            /* Dark text */
+  border-bottom-left-radius: 6px;      /* ✅ Proper chat bubble shape */
 }
 
 .message.user .message-bubble {
   background-color: hsl(0, 0%, 95%); /* Light grey background */
   color: hsl(215, 15%, 15%);         /* Dark text */
+  border-bottom-right-radius: 6px;   /* ✅ Proper chat bubble shape */
+}
+
+/* 🔥 FIXED: Proper styling for bold and italic text in messages */
+.message-bubble strong {
+  font-weight: 600;              /* ✅ Clear bold text */
+  color: hsl(215, 15%, 10%);     /* ✅ Slightly darker for emphasis */
+}
+
+.message-bubble em {
+  font-style: italic;            /* ✅ Clear italic text */
+}
+
+.message-bubble br {
+  line-height: 1.2;              /* ✅ Proper line break spacing */
 }
 
 .message-time {
-  font-size: 9px;
+  font-size: 10px;
   opacity: 0.6;
-  margin-top: 2px;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.message.user .message-time {
+  text-align: left;
 }
 
 .typing-indicator {
   display: none;
   align-items: center;
   gap: 5px;
-  padding: 10px;
-  background: #f1f3f5;
-  border-radius: 16px;
-  max-width: 80px;
+  padding: 12px 16px;
+  background: hsl(215, 15%, 90%);
+  border-radius: 18px;
+  max-width: 70px;
+  margin: 4px 0;
+  border-bottom-left-radius: 6px;
 }
 
 .typing-indicator.show {
@@ -197,7 +223,7 @@ body {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #999;
+  background: hsl(215, 15%, 40%);
   animation: typing 1.4s infinite ease-in-out;
 }
 
@@ -270,27 +296,25 @@ body {
 }
 
 .mic-btn {
-    background-color: hsl(215, 15%, 85%); /* Match bot bubble */
+  background-color: hsl(215, 15%, 85%); /* Match bot bubble */
   color: hsl(215, 15%, 15%);
-  color: white;
 }
 
 .send-btn {
-
   background-color: hsl(45, 90%, 60%); /* Secondary Gold */
-  color: hsl(0, 0%, 95%); /* Dark text on gold */
+  color: hsl(215, 15%, 15%); /* Dark text on gold */
 }
 
 .mic-btn:disabled,
 .send-btn:disabled {
-   background-color: hsl(215, 15%, 85%); /* Match bot bubble */
+  background-color: hsl(215, 15%, 85%); /* Match bot bubble */
   color: hsl(215, 15%, 15%);
   cursor: not-allowed;
 }
 
 .mic-btn.recording {
-    background-color: hsl(45, 90%, 60%); /* Secondary Gold */
-    color: hsl(215, 15%, 15%);           /* Dark icon/text */
+  background-color: hsl(45, 90%, 60%); /* Secondary Gold */
+  color: hsl(215, 15%, 15%);           /* Dark icon/text */
   animation: pulse 1s infinite;
 }
 
@@ -303,6 +327,34 @@ body {
   0% { transform: scale(1); }
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
+}
+
+/* When embedded (Lovable iframe), hide our own launcher bubble */
+body[data-embed="1"] .chat-toggle-bubble { 
+  display: none !important; 
+}
+
+/* When embedded, the chat panel should be visible by default */
+body[data-embed="1"] #chatContainer,
+body[data-embed="1"] #chatContainer.hidden {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+}
+
+body[data-embed="1"] .chat-container {
+  width: 100vw !important;
+  height: 100vh !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  border-radius: 0 !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+}
+
+body[data-embed="1"] .chat-close-btn {
+  display: block !important;
 }
 
 /* ✅ Responsive layout for smartphones */
@@ -323,101 +375,9 @@ body {
     bottom: 15px;
     right: 15px;
   }
-/* Removes blue outline when clicking the chat bubble */
-.chat-toggle-bubble:focus {
-  outline: none;
-  box-shadow: none;
- }
-/* When embedded (Lovable iframe), hide our own launcher bubble */
-body[data-embed="1"] .chat-toggle-bubble { display: none !important; }
-
-/* When embedded, the chat panel should be visible by default */
-body[data-embed="1"] #chatContainer.hidden { opacity: 1; transform: translateY(0); pointer-events: auto; }
-
-/* Embed mode: hide the launcher bubble and keep panel visible */
-body[data-embed="1"] .chat-toggle-bubble { 
-  display: none !important; 
+  
+  /* ✅ Adjust message bubble width for mobile */
+  .message-bubble {
+    max-width: calc(100vw - 80px);
+  }
 }
-
-body[data-embed="1"] #chatContainer,
-body[data-embed="1"] #chatContainer.hidden {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-  pointer-events: auto !important;
-}
-
-body[data-embed="1"] .chat-container {
-  width: 100vw !important;
-  height: 100vh !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  border-radius: 0 !important;
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-  pointer-events: auto !important;
-}
-
-body[data-embed="1"] .chat-toggle-bubble {
-  display: none !important;
-}
-
-body[data-embed="1"] .chat-close-btn {
-  display: block !important;
-}
-/* Readable chat bubbles (works for both bot + user) */
-.message-bubble{
-  display: inline-block;         /* stop full-width “bricks” */
-  white-space: pre-wrap;         /* keep \n line breaks from the model */
-  overflow-wrap: break-word;     /* modern wrapping */
-  word-break: normal;            /* avoid aggressive breaks */
-  hyphens: none;                 /* stop “avail-able” splits */
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-
-  max-width: 66ch;               /* optimal line length ~50–75 chars */
-  line-height: 1.55;             /* easier scanning */
-  font-size: 14.5px;             /* slightly larger for legibility */
-  padding: 10px 12px;            /* compact but comfy */
-  border-radius: 14px;           /* modern shape */
-}
-
-/* Optional: subtle emphasis for bold/italic once JS converts markdown */
-.message-bubble strong{ font-weight: 600; }
-.message-bubble em{ font-style: italic; }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
