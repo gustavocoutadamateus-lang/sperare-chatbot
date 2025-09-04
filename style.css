@@ -357,8 +357,53 @@ body[data-embed="1"] .chat-toggle-bubble {
 body[data-embed="1"] .chat-close-btn {
   display: block !important;
 }
+/* 1) Readable bubbles */
+.message-bubble {
+  white-space: pre-wrap;            /* keep \n from the model */
+  line-height: 1.6;                 /* more breathing room */
+  font-size: 14px;                  /* up from 13px */
+  max-width: 78ch;                  /* limit line length */
+  hyphens: auto;
+  word-break: break-word;
+}
+
+/* 2) Clearer visual roles */
+.message.bot .message-bubble {
+  background: hsl(210, 35%, 96%);   /* lighter, cleaner */
+  border: 1px solid hsl(210, 20%, 90%);
+}
+
+.message.user .message-bubble {
+  background: hsl(0, 0%, 100%);
+  border: 1px solid hsl(210, 18%, 88%);
+}
+
+/* 3) Vertical rhythm */
+.chat-messages { gap: 10px; }       /* a hair more space between bubbles */
+
+/* 4) “Meta” line (timestamps, addresses, etc.) */
+.message-bubble .meta {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: hsl(215, 12%, 35%);
+  opacity: 0.8;
+}
+
+/* 5) Mini “card” style for property replies */
+.prop-card {
+  display: grid;
+  gap: 4px;
+}
+.prop-title {
+  font-weight: 600;
+}
+.prop-line {
+  font-size: 13px;
+}
 
 }
+
 
 
 
