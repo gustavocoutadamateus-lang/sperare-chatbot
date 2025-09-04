@@ -118,14 +118,19 @@ function formatTime(date) {
 
 // 🔥 AQUI está o fix: recriamos a mesma hierarquia que o CSS espera
 function addMessage(sender, text) {
-  const msg = document.createElement('div');
+  const msg    = document.createElement('div');
   msg.className = `message ${sender}`;
 
   const bubble = document.createElement('div');
   bubble.className = 'message-bubble';
-  const html   = mdToHtml(text);
-  const safe   = DOMPurify.sanitize(html);
-  bubble.innerHTML = safe;               // ❷ ← now bold / italic render
+
+  if (sender === 'bot') {
+    const html = mdToHtml(text);
+    const safe = DOMPurify.sanitize(html);
+    bubble.innerHTML = safe;        // bold / italic render
+  } else {
+    bubble.textContent = text;      // user message stays literal
+  }
 
   const timeEl = document.createElement('div');
   timeEl.className = 'message-time';
@@ -293,6 +298,7 @@ function renderAssistantMessage(raw){
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
