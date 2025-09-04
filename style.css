@@ -147,14 +147,21 @@ body {
 }
 
 .message-bubble {
-  max-width: 75%;
-  padding: 8px 12px;
-  font-size: 13px;
-  border-radius: 12px;
-  position: relative;
-  word-wrap: break-word;
-  line-height: 1.4;
+  display: inline-block;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+
+  max-width: 66ch;
+  line-height: 1.55;
+  font-size: 14.5px;
+  padding: 10px 12px;
+  border-radius: 14px;
 }
+
 
 .message.bot .message-bubble {
   background-color: hsl(215, 15%, 85%); /* Medium-dark grey */
@@ -378,6 +385,7 @@ body[data-embed="1"] .chat-close-btn {
 .message-bubble strong{ font-weight: 600; }
 .message-bubble em{ font-style: italic; }
 }
+
 
 
 
