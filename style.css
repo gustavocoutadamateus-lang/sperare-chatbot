@@ -357,52 +357,72 @@ body[data-embed="1"] .chat-toggle-bubble {
 body[data-embed="1"] .chat-close-btn {
   display: block !important;
 }
-/* 1) Readable bubbles */
-.message-bubble {
-  white-space: pre-wrap;            /* keep \n from the model */
-  line-height: 1.6;                 /* more breathing room */
-  font-size: 14px;                  /* up from 13px */
-  max-width: 78ch;                  /* limit line length */
-  hyphens: auto;
-  word-break: break-word;
+/* ===== Chat readability reset ===== */
+.chat-messages {
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;                /* space between bubbles */
 }
 
-/* 2) Clearer visual roles */
+/* Base bubble */
+.message-bubble {
+  display: inline-block;
+  max-width: 78ch;          /* comfortable line length */
+  width: fit-content;       /* stop full-width slabs */
+  padding: 10px 12px;
+  border-radius: 14px;
+  line-height: 1.5;
+  font-size: 14.5px;
+
+  /* preserve paragraphs, kill ugly hyphenation */
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+}
+
+/* Bot vs user */
 .message.bot .message-bubble {
-  background: hsl(210, 35%, 96%);   /* lighter, cleaner */
-  border: 1px solid hsl(210, 20%, 90%);
+  background: #eef4fb;               /* soft, friendly */
+  border: 1px solid #d9e6f5;
+  color: #0f2942;
 }
 
 .message.user .message-bubble {
-  background: hsl(0, 0%, 100%);
-  border: 1px solid hsl(210, 18%, 88%);
+  background: #ffffff;
+  border: 1px solid #e6e9ef;
+  color: #1c1f26;
+  align-self: flex-end;              /* push to the right */
 }
 
-/* 3) Vertical rhythm */
-.chat-messages { gap: 10px; }       /* a hair more space between bubbles */
+/* Optional: a tiny drop shadow for depth (subtle!) */
+.message.bot .message-bubble,
+.message.user .message-bubble {
+  box-shadow: 0 2px 6px rgba(0,0,0,.05);
+}
 
-/* 4) “Meta” line (timestamps, addresses, etc.) */
-.message-bubble .meta {
+/* Timestamps -> quiet meta line */
+.message-time {
   display: block;
   margin-top: 6px;
   font-size: 12px;
-  color: hsl(215, 12%, 35%);
-  opacity: 0.8;
+  color: #6b7280;
+  opacity: .85;
 }
 
-/* 5) Mini “card” style for property replies */
-.prop-card {
-  display: grid;
-  gap: 4px;
+/* Make the first welcome bubble less massive */
+.message.bot:first-child .message-bubble {
+  max-width: 62ch;          /* shorter greeting */
 }
-.prop-title {
-  font-weight: 600;
-}
-.prop-line {
-  font-size: 13px;
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  .message-bubble { max-width: 90vw; font-size: 14px; }
 }
 
 }
+
 
 
 
