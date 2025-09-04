@@ -118,19 +118,12 @@ function formatTime(date) {
 
 // 🔥 AQUI está o fix: recriamos a mesma hierarquia que o CSS espera
 function addMessage(sender, text) {
-  const msg    = document.createElement('div');
+  const msg = document.createElement('div');
   msg.className = `message ${sender}`;
 
   const bubble = document.createElement('div');
   bubble.className = 'message-bubble';
-
-  if (sender === 'bot') {
-    const html = mdToHtml(text);
-    const safe = DOMPurify.sanitize(html);
-    bubble.innerHTML = safe;        // bold / italic render
-  } else {
-    bubble.textContent = text;      // user message stays literal
-  }
+  bubble.textContent = text;
 
   const timeEl = document.createElement('div');
   timeEl.className = 'message-time';
@@ -272,32 +265,18 @@ async function sendMessage(message, actionType = 'text') {
     hideTypingIndicator();
     setInputState(true);
   }
-// minimal markdown→HTML (bold + italic + line breaks)
-function mdToHtml(text){
-  const esc = text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-
-  return esc
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')   // **bold**
-    .replace(/\*(?!\*)(.+?)\*/g,  '<em>$1</em>')        // *italic*
-    .replace(/\n/g, '<br>');
-}
-
-function renderAssistantMessage(raw){
-  const html = mdToHtml(raw);
-  const safe = DOMPurify.sanitize(html); // sanitize before inserting
-  const el = document.createElement('div');
-  el.className = 'message bot';
-  el.innerHTML = `<div class="message-bubble">${safe}</div>`;
-  document.querySelector('.chat-messages').appendChild(el);
-}
-
 }
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
+
+
+
+
+
+
+
 
 
 
