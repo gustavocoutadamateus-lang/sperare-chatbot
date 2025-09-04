@@ -357,7 +357,28 @@ body[data-embed="1"] .chat-toggle-bubble {
 body[data-embed="1"] .chat-close-btn {
   display: block !important;
 }
+/* Readable chat bubbles (works for both bot + user) */
+.message-bubble{
+  display: inline-block;         /* stop full-width “bricks” */
+  white-space: pre-wrap;         /* keep \n line breaks from the model */
+  overflow-wrap: break-word;     /* modern wrapping */
+  word-break: normal;            /* avoid aggressive breaks */
+  hyphens: none;                 /* stop “avail-able” splits */
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+
+  max-width: 66ch;               /* optimal line length ~50–75 chars */
+  line-height: 1.55;             /* easier scanning */
+  font-size: 14.5px;             /* slightly larger for legibility */
+  padding: 10px 12px;            /* compact but comfy */
+  border-radius: 14px;           /* modern shape */
 }
+
+/* Optional: subtle emphasis for bold/italic once JS converts markdown */
+.message-bubble strong{ font-weight: 600; }
+.message-bubble em{ font-style: italic; }
+}
+
 
 
 
