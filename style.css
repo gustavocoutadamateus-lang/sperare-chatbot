@@ -357,35 +357,7 @@ body[data-embed="1"] .chat-toggle-bubble {
 body[data-embed="1"] .chat-close-btn {
   display: block !important;
 }
-/* MESSAGE TEXT — preserve breaks, stop ugly hyphens, modern wrapping, nicer line length */
-.message-bubble {
-  white-space: pre-wrap;          /* keep \n line breaks (MDN) */
-  overflow-wrap: break-word;      /* modern alias of word-wrap (MDN) */
-  word-wrap: normal;              /* neutralize legacy setting if present */
-  hyphens: none;                  /* prevent browser hyphenation (MDN) */
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-
-  max-width: 68ch;                /* ~optimal line length (50–75 chars) */
-  line-height: 1.5;               /* easier scan */
-  font-size: 14.5px;              /* slight bump for legibility */
 }
-
-/* OPTIONAL: tighter, card-like bubbles (avoid full-width slabs) */
-.message .message-bubble {
-  display: inline-block;
-  width: auto;                    /* avoid “brick” feel */
-}
-}
-
-
-
-
-
-
-
-
-
 
 
 
