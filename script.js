@@ -123,7 +123,9 @@ function addMessage(sender, text) {
 
   const bubble = document.createElement('div');
   bubble.className = 'message-bubble';
-  bubble.textContent = text;
+  const html   = mdToHtml(text);
+  const safe   = DOMPurify.sanitize(html);
+  bubble.innerHTML = safe;               // ❷ ← now bold / italic render
 
   const timeEl = document.createElement('div');
   timeEl.className = 'message-time';
@@ -291,6 +293,7 @@ function renderAssistantMessage(raw){
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
