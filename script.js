@@ -267,19 +267,13 @@ async function sendMessage(message, actionType = 'text') {
   }
 // minimal markdown→HTML (bold + italic + line breaks)
 function mdToHtml(text){
-  // escape first to avoid stray HTML sneaking in
-  const esc = text
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;');
-
-  // **bold**  and  *italic*
-  const withMarkup = esc
+  // escape first
+  const esc = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // **bold** and *italic*
+  return esc
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/(^|[^*])\*(?!\s)(.+?)\*(?!\w)/g, '$1<em>$2</em>');
-
-  // keep author line breaks (CSS pre-wrap handles this too; <br> helps older code)
-  return withMarkup.replace(/\n/g, '<br>');
+    .replace(/(^|[^*])\*(?!\s)(.+?)\*(?!\w)/g, '$1<em>$2</em>')
+    .replace(/\n/g, '<br>');
 }
 
 function renderAssistantMessage(raw){
@@ -295,6 +289,7 @@ function renderAssistantMessage(raw){
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
