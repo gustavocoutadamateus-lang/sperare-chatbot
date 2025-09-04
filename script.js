@@ -1,4 +1,4 @@
-// --- EMBED MODE DETECTION ---
+/ --- EMBED MODE DETECTION ---
 const qs = new URLSearchParams(location.search);
 const EMBED = qs.get('embed') === '1' || (window.self !== window.top);
 document.addEventListener('DOMContentLoaded', () => {
@@ -116,14 +116,35 @@ function formatTime(date) {
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-// 🔥 AQUI está o fix: recriamos a mesma hierarquia que o CSS espera
+// 🔥 FIXED: Proper markdown to HTML conversion and consistent message structure
+function mdToHtml(text) {
+  const esc = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  return esc
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')   // bold
+    .replace(/\*(?!\*)(.+?)\*/g, '<em>$1</em>')         // italic
+    .replace(/\n/g, '<br>');                            // new lines
+}
+
+// 🔥 FIXED: Unified message creation function with proper markdown handling
 function addMessage(sender, text) {
   const msg = document.createElement('div');
   msg.className = `message ${sender}`;
 
   const bubble = document.createElement('div');
   bubble.className = 'message-bubble';
-  bubble.textContent = text;
+  
+  // Convert markdown to HTML for bot messages
+  if (sender === 'bot') {
+    const htmlContent = mdToHtml(text);
+    const safeContent = DOMPurify.sanitize(htmlContent);
+    bubble.innerHTML = safeContent;
+  } else {
+    bubble.textContent = text;
+  }
 
   const timeEl = document.createElement('div');
   timeEl.className = 'message-time';
@@ -265,40 +286,7 @@ async function sendMessage(message, actionType = 'text') {
     hideTypingIndicator();
     setInputState(true);
   }
-// minimal markdown→HTML (bold + italic + line breaks)
-function mdToHtml(text){
-  const esc = text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-
-  return esc
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')   // bold
-    .replace(/\*(?!\*)(.+?)\*/g, '<em>$1</em>')         // italic
-    .replace(/\n/g, '<br>');                            // new lines
-}
-
-
-function renderAssistantMessage(raw){
-  const html = mdToHtml(raw);
-  const safe = DOMPurify.sanitize(html); // sanitize before inserting
-  const el = document.createElement('div');
-  el.className = 'message bot';
-  el.innerHTML = `<div class="message-bubble">${safe}</div>`;
-  document.querySelector('.chat-messages').appendChild(el);
-}
-
 }
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
-
-
-
-
-
-
-
-
-
-
