@@ -116,8 +116,36 @@ function formatTime(date) {
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-// 🔥 AQUI está o fix: recriamos a mesma hierarquia que o CSS espera
 function addMessage(sender, text) {
+  // ✅ Special hook: render user info form if flagged
+  if (sender === 'bot' && text.includes('[[REQUEST_USER_INFO]]')) {
+    const msg = document.createElement('div');
+    msg.className = `message bot`;
+
+    const bubble = document.createElement('div');
+    bubble.className = 'message-bubble';
+    bubble.innerHTML = `
+      <div style="background:#d4af37; padding:12px; border-radius:8px; color:white; max-width:100%; display:flex; flex-direction:column; gap:8px;">
+        <input id="user_name" placeholder="Enter your name" style="padding:8px; border:none; border-radius:4px;" />
+        <input id="user_email" type="email" placeholder="Enter your email" style="padding:8px; border:none; border-radius:4px;" />
+        <button onclick="submitUserInfo()" style="background:white; color:#d4af37; padding:8px; border:none; border-radius:4px; cursor:pointer;">
+          Submit
+        </button>
+      </div>
+    `;
+
+    const timeEl = document.createElement('div');
+    timeEl.className = 'message-time';
+    timeEl.textContent = formatTime(new Date());
+
+    bubble.appendChild(timeEl);
+    msg.appendChild(bubble);
+    messagesContainer.appendChild(msg);
+    scrollToBottom();
+    return; // stop here so it doesn’t fall back to normal message
+  }
+
+  // 🔽 Your original logic follows unchanged
   const msg = document.createElement('div');
   msg.className = `message ${sender}`;
 
@@ -134,6 +162,23 @@ function addMessage(sender, text) {
   messagesContainer.appendChild(msg);
   scrollToBottom();
 }
+function submitUserInfo() {
+  const name = document.getElementById("user_name")?.value;
+  const email = document.getElementById("user_email")?.value;
+
+  if (!name || !email) {
+    alert("Please enter both name and email.");
+    return;
+  }
+
+  // Send structured info back to n8n
+  sendMessage(JSON.stringify({ user_name: name, user_email: email }), "text");
+
+  // Remove the form after submission
+  const formMsg = document.getElementById("user_name")?.closest(".message");
+  if (formMsg) formMsg.remove();
+}
+
 
 // refs DOM
 let recognition = null;
@@ -269,6 +314,7 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
