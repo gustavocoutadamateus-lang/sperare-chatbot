@@ -241,15 +241,15 @@ body {
   align-items: center;
   background: #f8f9fa;
   border-radius: 25px;
-  padding: 4px 6px;  /* ✅ Reduced padding */
-  gap: 6px;
+  padding: 3px 5px;  /* ✅ Even smaller padding */
+  gap: 4px;          /* ✅ Reduced gap */
 }
 
 .chat-input {
   flex: 1;
   border: none;
   background: transparent;
-  padding: 8px 12px;  /* ✅ Reduced padding */
+  padding: 6px 10px;  /* ✅ Reduced padding more */
   font-size: 15px;
   outline: none;
 }
@@ -257,20 +257,20 @@ body {
 .input-btn,
 .mic-btn,
 .send-btn {
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  min-height: 36px;
+  width: 32px;        /* ✅ Made buttons smaller */
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
   border-radius: 50%;
   border: none;
   outline: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 14px;    /* ✅ Smaller icon size */
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
-  flex-shrink: 0;  /* ✅ Prevents buttons from shrinking */
+  flex-shrink: 0;
 }
 
 .input-btn:hover {
@@ -389,6 +389,7 @@ body[data-embed="1"] .chat-close-btn {
 }
 
 }
+
 
 
 
