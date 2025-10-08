@@ -240,7 +240,7 @@ body {
   display: flex;
   align-items: center;
   background: #f8f9fa;
-  border-radius: 30px;
+  border-radius: 25px;
   padding: 6px 8px;
   gap: 6px;
 }
@@ -254,18 +254,22 @@ body {
   outline: none;
 }
 
-.input-btn {
-  width: 38px;
-  height: 38px;
-  border: none;
+.input-btn,
+.mic-btn,
+.send-btn {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 17px;
+  font-size: 18px;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.3s, transform 0.2s;
 }
+
 
 .input-btn:hover {
   transform: scale(1.1);
@@ -284,7 +288,12 @@ body {
 
 .send-btn {
   background-color: hsl(45, 90%, 60%);
-  color: hsl(215, 15%, 15%);
+  color: white; /* Make send icon white */
+}
+
+.send-btn:hover {
+  background-color: hsl(45, 90%, 55%);
+  transform: scale(1.1);
 }
 
 .send-btn:disabled {
@@ -364,6 +373,7 @@ body[data-embed="1"] .chat-close-btn {
 }
 
 }
+
 
 
 
