@@ -241,7 +241,7 @@ body {
   align-items: center;
   background: #f8f9fa;
   border-radius: 25px;
-  padding: 6px 8px;
+  padding: 4px 6px;  /* ✅ Reduced padding */
   gap: 6px;
 }
 
@@ -249,7 +249,7 @@ body {
   flex: 1;
   border: none;
   background: transparent;
-  padding: 10px 14px;
+  padding: 8px 12px;  /* ✅ Reduced padding */
   font-size: 15px;
   outline: none;
 }
@@ -262,14 +262,15 @@ body {
   min-width: 36px;
   min-height: 36px;
   border-radius: 50%;
-  border: none;           /* ✅ removes black border */
-  outline: none;          /* ✅ removes focus outline */
+  border: none;
+  outline: none;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 16px;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
+  flex-shrink: 0;  /* ✅ Prevents buttons from shrinking */
 }
 
 .input-btn:hover {
@@ -388,6 +389,7 @@ body[data-embed="1"] .chat-close-btn {
 }
 
 }
+
 
 
 
