@@ -65,7 +65,7 @@ let USER_SESSION_ID = getOrCreateUserSessionId();
 
 /* ====================== WEBHOOKS n8n ======================= */
 // CHAT: mantém o teu endpoint que já responde ao chat (leva sessionId)
-const CHAT_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook/9109b275-6754-4f7b-8d6a-8382d4685b9f/chat';
+const CHAT_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook/b1b72f20-8933-44a1-a2ab-8ff9ee47a5d6/chat';
 
 // PÁGINA: novo endpoint (dispara quando muda de listagem)
 const PAGE_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook/5b7c178b-e215-45a6-b016-318a48be8b57';
@@ -326,6 +326,7 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
