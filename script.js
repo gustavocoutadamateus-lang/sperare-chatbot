@@ -36,15 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // recebe PROPERTY_CONTEXT do parent → guarda urlId e dispara o webhook de página
-window.addEventListener("message", (event) => {
-  // debug opcional: console.log("[iframe] msg", event.origin, event.data);
-  if (event.origin !== PARENT_ORIGIN) return;
-  const { type, urlId } = event.data || {};
-  if (type === "PROPERTY_CONTEXT") {
-    currentUrlId = urlId || null;
-    if (currentUrlId) localStorage.setItem("urlId", currentUrlId);
-    notifyPageWebhook(); // envia só o urlId para o webhook de página
-  }
+window.addEventListener("message", (e) => {
+  const fromIframe = (iframe && e.source === iframe.contentWindow);
+  const trustedOrigin = e.origin === CHAT_ORIGIN;
+
+  // Aceita se veio do seu iframe (canal conhecido) OU se o origin bate.
+  if (!fromIframe && !trustedOrigin) return;
+
+  if (e.data?.type === "CHAT_READY") postListingContext();
+  if (e.data?.type === "closeChatbot") closeChat();
 });
 
 // Session ID estável por browser (15 dígitos) — já usado no webhook de chat
@@ -326,6 +326,7 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
