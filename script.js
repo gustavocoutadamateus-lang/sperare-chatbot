@@ -103,6 +103,7 @@ function notifyPageWebhook() {
 }
 
 /* ====================== UI / CHAT ======================= */
+// ✅ FIXED: Removed extra closing brace
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
   const isInIframe = window.self !== window.top;
@@ -117,7 +118,6 @@ function toggleChat() {
       chat.classList.toggle('hidden');
     }
   }
-}
 }
 
 function scrollToBottom() {
@@ -145,17 +145,6 @@ function addMessage(sender, text) {
         </button>
       </div>
     `;
-    function saveChatHistory() {
-  const history = document.getElementById('chatMessages').innerHTML;
-  localStorage.setItem('chatHistory', history);
-}
-
-function restoreChatHistory() {
-  const history = localStorage.getItem('chatHistory');
-  if (history) {
-    document.getElementById('chatMessages').innerHTML = history;
-  }
-}
 
     const timeEl = document.createElement('div');
     timeEl.className = 'message-time';
@@ -165,10 +154,10 @@ function restoreChatHistory() {
     msg.appendChild(bubble);
     messagesContainer.appendChild(msg);
     scrollToBottom();
-    return; // stop here so it doesn’t fall back to normal message
+    return; // stop here so it doesn't fall back to normal message
   }
 
-  // 🔽 Your original logic follows unchanged
+  // 📽 Your original logic follows unchanged
   const msg = document.createElement('div');
   msg.className = `message ${sender}`;
 
@@ -185,6 +174,7 @@ function restoreChatHistory() {
   messagesContainer.appendChild(msg);
   scrollToBottom();
 }
+
 function submitUserInfo() {
   const name = document.getElementById("user_name")?.value;
   const email = document.getElementById("user_email")?.value;
@@ -201,7 +191,6 @@ function submitUserInfo() {
   const formMsg = document.getElementById("user_name")?.closest(".message");
   if (formMsg) formMsg.remove();
 }
-
 
 // refs DOM
 let recognition = null;
@@ -337,6 +326,7 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
