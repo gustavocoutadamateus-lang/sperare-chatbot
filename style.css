@@ -250,41 +250,41 @@ body {
 }
 
 .input-btn {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50%;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  transition: 0.2s;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .mic-btn {
-    background-color: hsl(215, 15%, 85%); /* Match bot bubble */
+  background-color: hsl(215, 15%, 85%);
   color: hsl(215, 15%, 15%);
-  color: white;
 }
 
-.send-btn {
-
-  background-color: hsl(45, 90%, 60%); /* Secondary Gold */
-  color: hsl(0, 0%, 95%); /* Dark text on gold */
-}
-
-.mic-btn:disabled,
-.send-btn:disabled {
-   background-color: hsl(215, 15%, 85%); /* Match bot bubble */
-  color: hsl(215, 15%, 15%);
-  cursor: not-allowed;
+.mic-btn:hover {
+  background-color: hsl(215, 15%, 75%);
 }
 
 .mic-btn.recording {
-    background-color: hsl(45, 90%, 60%); /* Secondary Gold */
-    color: hsl(215, 15%, 15%);           /* Dark icon/text */
+  background-color: hsl(45, 90%, 60%);
+  color: hsl(215, 15%, 15%);
   animation: pulse 1s infinite;
+}
+
+.send-btn {
+  background-color: hsl(45, 90%, 60%);
+  color: hsl(215, 15%, 15%);
+}
+
+.send-btn:hover {
+  background-color: hsl(45, 90%, 55%);
+  transform: scale(1.1);
 }
 
 @keyframes typing {
@@ -359,6 +359,7 @@ body[data-embed="1"] .chat-close-btn {
 }
 
 }
+
 
 
 
