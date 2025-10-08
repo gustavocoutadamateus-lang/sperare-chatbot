@@ -133,6 +133,17 @@ function addMessage(sender, text) {
         </button>
       </div>
     `;
+    function saveChatHistory() {
+  const history = document.getElementById('chatMessages').innerHTML;
+  localStorage.setItem('chatHistory', history);
+}
+
+function restoreChatHistory() {
+  const history = localStorage.getItem('chatHistory');
+  if (history) {
+    document.getElementById('chatMessages').innerHTML = history;
+  }
+}
 
     const timeEl = document.createElement('div');
     timeEl.className = 'message-time';
@@ -314,6 +325,7 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
