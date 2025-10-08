@@ -240,9 +240,9 @@ body {
   display: flex;
   align-items: center;
   background: #f8f9fa;
-  border-radius: 25px;
-  padding: 4px;
-  gap: 4px;
+  border-radius: 30px;
+  padding: 6px 8px;
+  gap: 6px;
 }
 
 .chat-input {
@@ -255,25 +255,25 @@ body {
 }
 
 .input-btn {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 17px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.input-btn:hover {
+  transform: scale(1.1);
 }
 
 .mic-btn {
   background-color: hsl(215, 15%, 85%);
-  color: hsl(215, 15%, 15%);
-}
-
-.mic-btn:hover {
-  background-color: hsl(215, 15%, 75%);
+  color: hsl(215, 15%, 20%);
 }
 
 .mic-btn.recording {
@@ -287,9 +287,9 @@ body {
   color: hsl(215, 15%, 15%);
 }
 
-.send-btn:hover {
-  background-color: hsl(45, 90%, 55%);
-  transform: scale(1.1);
+.send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @keyframes typing {
@@ -364,6 +364,7 @@ body[data-embed="1"] .chat-close-btn {
 }
 
 }
+
 
 
 
