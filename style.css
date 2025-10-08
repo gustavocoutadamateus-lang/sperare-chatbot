@@ -98,7 +98,7 @@ body {
 }
 
 .chat-close-btn {
-  display: none;
+  display: block;
   position: absolute;
   top: 12px;
   right: 12px;
@@ -108,6 +108,11 @@ body {
   color: white;
   cursor: pointer;
   z-index: 2;
+  transition: transform 0.2s;
+}
+
+.chat-close-btn:hover {
+  transform: scale(1.2);
 }
 
 .chat-background-logo {
@@ -359,6 +364,7 @@ body[data-embed="1"] .chat-close-btn {
 }
 
 }
+
 
 
 
