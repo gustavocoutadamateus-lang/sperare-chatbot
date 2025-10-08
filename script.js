@@ -20,8 +20,13 @@ let currentUrlId =
 
 // ✅ NOVO: só envia CHAT_READY se estivermos MESMO em iframe
 function safePostToParent(msg) {
-  if (EMBED && window.parent && window.parent !== window) {
-    try { window.parent.postMessage(msg, PARENT_ORIGIN); } catch {}
+  const isInIframe = window.self !== window.top;
+  if (isInIframe && window.parent) {
+    try { 
+      window.parent.postMessage(msg, '*'); // Use '*' as wildcard for now
+    } catch(e) {
+      console.error('postMessage failed:', e);
+    }
   }
 }
 
@@ -100,12 +105,19 @@ function notifyPageWebhook() {
 /* ====================== UI / CHAT ======================= */
 function toggleChat() {
   const chat = document.querySelector('.chat-container');
-  if (EMBED) {
-    // fechar no parent (widget)
-    safePostToParent({ type: 'closeChatbot' }); // ✅ usa helper (mantém origin correto)
+  const isInIframe = window.self !== window.top;
+  
+  if (isInIframe) {
+    // In embed mode: tell parent to close
+    console.log('[toggleChat] Sending close message to parent');
+    safePostToParent({ type: 'closeChatbot' });
   } else {
-    chat.classList.toggle('hidden');
+    // Standalone mode: toggle visibility
+    if (chat) {
+      chat.classList.toggle('hidden');
+    }
   }
+}
 }
 
 function scrollToBottom() {
@@ -325,6 +337,7 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
