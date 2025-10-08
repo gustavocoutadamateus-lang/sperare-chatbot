@@ -231,7 +231,7 @@ body {
 }
 
 .chat-input-container {
-  padding: 15px;
+  padding: 10px;      /* ✅ Reduced from 15px */
   background: white;
   border-top: 1px solid #e9ecef;
 }
@@ -389,6 +389,7 @@ body[data-embed="1"] .chat-close-btn {
 }
 
 }
+
 
 
 
