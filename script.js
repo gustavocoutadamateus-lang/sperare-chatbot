@@ -10,41 +10,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ====================== CONTEXTO + SESSÃO ======================= */
+// Parent exato que pode falar com o chatbot
 const PARENT_ORIGIN = "https://sperare-dream-homes-92632.lovable.app";
 
-// urlId pode vir no src (?urlId=123) ou já estar guardado
+// urlId pode vir na query (?urlId=123) ou já estar guardado
 let currentUrlId =
   new URLSearchParams(location.search).get("urlId") ||
   localStorage.getItem("urlId") ||
   null;
 
-// ✅ NOVO: só envia CHAT_READY se estivermos MESMO em iframe
-function safePostToParent(msg) {
+// Quando o chatbot carrega dentro de um iframe, avisa o parent
+document.addEventListener("DOMContentLoaded", () => {
   const isInIframe = window.self !== window.top;
   if (isInIframe && window.parent) {
-    try { 
-      window.parent.postMessage(msg, '*'); // Use '*' as wildcard for now
-    } catch(e) {
-      console.error('postMessage failed:', e);
-    }
+    // aqui podes pôr o origin exato do parent se quiseres ainda mais strict
+    window.parent.postMessage({ type: "CHAT_READY" }, PARENT_ORIGIN);
   }
-}
-
-// 🔄 TROCA: em vez do try solto, usa o helper acima
-document.addEventListener('DOMContentLoaded', () => {
-  safePostToParent({ type: "CHAT_READY" }); // o parent responde com PROPERTY_CONTEXT
 });
 
-// recebe PROPERTY_CONTEXT do parent → guarda urlId e dispara o webhook de página
-window.addEventListener("message", (e) => {
-  const fromIframe = (iframe && e.source === iframe.contentWindow);
-  const trustedOrigin = e.origin === CHAT_ORIGIN;
+// Recebe o contexto da página enviado pelo parent (id do imóvel)
+window.addEventListener("message", (event) => {
+  // só aceitamos mensagens deste domínio exato
+  if (event.origin !== PARENT_ORIGIN) return;
 
-  // Aceita se veio do seu iframe (canal conhecido) OU se o origin bate.
-  if (!fromIframe && !trustedOrigin) return;
+  const data = event.data || {};
 
-  if (e.data?.type === "CHAT_READY") postListingContext();
-  if (e.data?.type === "closeChatbot") closeChat();
+  if (data.type === "PROPERTY_CONTEXT") {
+    console.log("[Chatbot] Received property context:", data);
+    currentUrlId = data.urlId || null;
+
+    if (currentUrlId) {
+      localStorage.setItem("urlId", currentUrlId);
+    }
+  }
 });
 
 // Session ID estável por browser (15 dígitos) — já usado no webhook de chat
@@ -67,9 +65,6 @@ let USER_SESSION_ID = getOrCreateUserSessionId();
 // CHAT: mantém o teu endpoint que já responde ao chat (leva sessionId)
 const CHAT_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook/b1b72f20-8933-44a1-a2ab-8ff9ee47a5d6/chat';
 
-// PÁGINA: novo endpoint (dispara quando muda de listagem)
-const PAGE_WEBHOOK_URL = 'https://n8n-production-3d16.up.railway.app/webhook/5b7c178b-e215-45a6-b016-318a48be8b57';
-
 // dispara 1x por listagem; evita spam se o id não mudou
 let lastNotifiedUrlId = null;
 function notifyPageWebhook() {
@@ -91,16 +86,22 @@ function notifyPageWebhook() {
   console.log('[notifyPageWebhook] sending to', PAGE_WEBHOOK_URL, payload);
 
   // ✅ ALTERADO: usar fetch fire-and-forget sem credenciais (evita CORS com sendBeacon)
-  const body = JSON.stringify(payload);
-  fetch(PAGE_WEBHOOK_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body,
-    keepalive: true,
-    credentials: 'omit',
-    mode: 'no-cors'
-  }).catch(()=>{});
-}
+fetch(CHAT_WEBHOOK_URL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    chatInput: message,
+    action: actionType,
+    sessionId: USER_SESSION_ID,
+    urlId: currentUrlId || null,
+    fullUrl: window.location.href,
+    userAgent: navigator.userAgent,
+    timestamp: Date.now()
+  }),
+  keepalive: true,
+  credentials: 'omit',
+  mode: 'no-cors'
+}).catch(() => {});
 
 /* ====================== UI / CHAT ======================= */
 // ✅ FIXED: Removed extra closing brace
@@ -326,6 +327,7 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
