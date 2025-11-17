@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ====================== CONTEXTO + SESSÃO ======================= */
-const PARENT_ORIGIN = "https://sperare-dream-homes.lovable.app";
+const PARENT_ORIGIN = "https://sperare-dream-homes-92632.lovable.app";
 
 // urlId pode vir no src (?urlId=123) ou já estar guardado
 let currentUrlId =
@@ -326,6 +326,7 @@ async function sendMessage(message, actionType = 'text') {
 
 /* ====================== BOOT ======================= */
 document.addEventListener('DOMContentLoaded', initializeChatbot);
+
 
 
 
